@@ -1,3 +1,6 @@
+---
+import img from '../assets/img.png';
+---
 
 <html lang="es">
 <head>
@@ -267,9 +270,19 @@
         font-size: 2.5rem;
       }
     }
+
+    .img-separador {
+      display: block;
+      margin: 25px auto 0 auto; /* centra */
+      width: 100%;              /* ocupa todo el ancho */
+      max-width: 900px;        /* no crece demasiado */
+      height: auto;            /* mantiene proporción */
+      opacity: 0.9;            /* leve transparencia */
+    }
   </style>
 </head>
 <body>
+
 <div class="header">
   <h1>PLAGI<span>DEC</span></h1>
   <div class="subtitle">Deteccion de Plagio y Contenido Generado por IA</div>
@@ -293,7 +306,7 @@
 
     <!-- Imagen -->
     <div class="image-content">
-      <img src="https://tse1.explicit.bing.net/th/id/OIP.edvNSkWojPKC6ITk56M2AQHaEo?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Plagio IA">
+      <img src="https://st.depositphotos.com/1004713/3188/i/950/depositphotos_31885447-stock-photo-college-student-trying-to-copy.jpg" alt="Plagio IA">
     </div>
 
   </div>
@@ -330,37 +343,41 @@
     </ul>
   </div>
 
-  <!-- Para que va a ser usado -->
-  <div class="card">
-    <h2>Para que va a ser usado</h2>
-    <div class="timeline">
-      <div class="timeline-step">
-        <div class="number">1</div>
-        <strong>Asignacion</strong>
-        <p>Docente publica actividad en Moodle</p>
-      </div>
-      <div class="timeline-step">
-        <div class="number">2</div>
-        <strong>Entrega</strong>
-        <p>Estudiante sube su trabajo</p>
-      </div>
-      <div class="timeline-step">
-        <div class="number">3</div>
-        <strong>Analisis</strong>
-        <p>PlagiDec procesa automaticamente</p>
-      </div>
-      <div class="timeline-step">
-        <div class="number">4</div>
-        <strong>Reporte</strong>
-        <p>Visualizacion de porcentajes y probabilidad</p>
-      </div>
-      <div class="timeline-step">
-        <div class="number">5</div>
-        <strong>Evaluacion</strong>
-        <p>Calificacion con respaldo objetivo</p>
-      </div>
+<div class="card">
+  <h2>Para que va a ser usado</h2>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="number">1</div>
+      <strong>Asignacion</strong>
+      <p>Docente publica actividad en Moodle</p>
+    </div>
+
+    <div class="timeline-step">
+      <div class="number">2</div>
+      <strong>Entrega</strong>
+      <p>Estudiante sube su trabajo</p>
+    </div>
+
+    <div class="timeline-step">
+      <div class="number">3</div>
+      <strong>Analisis</strong>
+      <p>PlagiDec procesa automaticamente</p>
+    </div>
+
+    <div class="timeline-step">
+      <div class="number">4</div>
+      <strong>Reporte</strong>
+      <p>Visualizacion de porcentajes y probabilidad</p>
+    </div>
+
+    <div class="timeline-step">
+      <div class="number">5</div>
+      <strong>Evaluacion</strong>
+      <p>Calificacion con respaldo objetivo</p>
     </div>
   </div>
+</div>
 
   <!-- Herramientas y tecnologias -->
   <div class="card">
@@ -451,7 +468,7 @@
 
   <!-- Flujo de funcionamiento -->
   <div class="card">
-    <h2>Flujo de Funcionamiento</h2>
+    <h2>Funcionamiento</h2>
     <div class="timeline">
       <div class="timeline-step"><div class="number">1</div><strong>Recepcion</strong><p>Archivo desde Moodle</p></div>
       <div class="timeline-step"><div class="number">2</div><strong>Preprocesamiento</strong><p>Limpieza y tokenizacion</p></div>
@@ -459,6 +476,7 @@
       <div class="timeline-step"><div class="number">4</div><strong>Deteccion IA</strong><p>Modelo RoBERTa</p></div>
       <div class="timeline-step"><div class="number">5</div><strong>Reporte</strong><p>Visualizacion en interfaz</p></div>
     </div>
+    <img src={img.src} alt="decoracion" class="img-separador">
   </div>
 </div>
 <script>
