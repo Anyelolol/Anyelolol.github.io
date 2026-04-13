@@ -5,23 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PlagiDec - Deteccion de Plagio e IA para Moodle</title>
   <style>
-    /* Reset y base */
+    /* Reset */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    /* Fondo */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e1e1e 0%, #1c1c1c 100%);
-      color: #333;
-      line-height: 1.6;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e6ecf5 100%) !important;
+      color: #003366;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.95); /* tapa el fondo */
+      z-index: -1;
     }
 
     /* Header */
     .header {
-      background: linear-gradient(135deg, #1b1b1b 0%, #303030 100%);
+      background: linear-gradient(135deg, #003366 0%, #0055A4 100%);
       color: white;
       padding: 80px 20px;
       text-align: center;
@@ -29,70 +37,72 @@
 
     .header h1 {
       font-size: 4rem;
-      margin-bottom: 10px;
       letter-spacing: 2px;
     }
 
     .header h1 span {
-      color: #6e6e6e;
+      color: #f2b705; /* amarillo */
     }
 
-    .header .subtitle {
+    .subtitle {
       font-size: 1.3rem;
       opacity: 0.9;
     }
 
     .badge {
       display: inline-block;
-      background: rgb(76 76 76 / 0, 3);
+      background: rgba(255,255,255,0.1);
       padding: 8px 20px;
       border-radius: 50px;
       margin-top: 20px;
-      font-size: 0.9rem;
-      border: 1px solid rgba(108, 99, 255, 0.5);
+      border: 1px solid rgba(255,255,255,0.3);
     }
 
     .ubb-footer {
       font-size: 0.8rem;
       margin-top: 15px;
-      opacity: 0.6;
+      opacity: 0.7;
     }
 
     /* Contenedor */
     .container {
       max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 20px;
+      margin: auto;
+      padding: 60px 20px;
     }
 
-    /* Tarjetas */
+    /* Cards */
     .card {
-      background: white;
+      background: rgba(255, 255, 255, 0.75); /* blanco transparente */
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-radius: 16px;
       padding: 30px;
-      margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+      border-left: 6px solid #0055A4;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
     }
 
     .card h2 {
-      color: #6c63ff;
+      color: #003366;
       margin-bottom: 20px;
-      font-size: 1.8rem;
-      border-left: 4px solid #6c63ff;
-      padding-left: 15px;
     }
 
     .card h3 {
-      color: #2c2c54;
-      margin: 25px 0 15px 0;
-      font-size: 1.3rem;
+      color: #0055A4;
     }
 
-    /* Grids */
-    .grid-2, .grid-3, .grid-4 {
-      display: grid;
-      gap: 20px;
-      margin-top: 20px;
+    .card p,
+    .card li {
+      color: #333;
+    }
+
+    /* Grid */
+    .grid-3 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
     }
 
     .grid-3 {
@@ -103,49 +113,98 @@
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 
-    /* Tarjetas de herramientas */
+    /* Tool Cards */
     .tool-card {
-      background: #f5f5fa;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      border: 1px solid #e0e0e8;
-      transition: all 0.2s ease;
-    }
+      display: flex;
+      align-items: center;
+      gap: 10px;
 
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(6px);
+
+      border-radius: 50px; /* 🔥 forma de cápsula */
+      padding: 8px 16px;
+
+      border: 1px solid rgba(0, 85, 164, 0.2);
+      transition: 0.2s ease;
+
+      width: auto;
+      max-width: fit-content;
+    }
     .tool-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      border-color: #6c63ff;
+      background: rgba(0, 85, 164, 0.1);
+      border-color: #0055A4;
+      transform: translateY(-2px);
     }
 
     .tool-icon {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 12px;
-      color: #6c63ff;
+      font-size: 1.2rem;
+      margin: 0;
     }
 
     .tool-card h4 {
-      margin-bottom: 8px;
-      font-size: 1.2rem;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .tool-card p {
+      display: none;
     }
 
     .tool-tag {
-      display: inline-block;
-      background: #e8e8f0;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      margin-top: 10px;
-      font-weight: 500;
+      font-size: 0.6rem;
+      padding: 2px 8px;
+      margin: 0;
+    }
+
+    /* Timeline */
+    .timeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .timeline-step {
+      flex: 1;
+      background: #f5f7fa;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .timeline-step .number {
+      background: #0055A4;
+      color: white;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      margin-bottom: 10px;
+    }
+
+    /* Audience */
+    .audience-item {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(0, 85, 164, 0.15);
+    }
+
+    /* Alert */
+    .demo-alert {
+      background: #fff8e1;
+      border-left: 4px solid #f2b705;
+      padding: 15px;
+      border-radius: 8px;
+      color: #333;
     }
 
     /* Tabla */
-    .table-wrapper {
-      overflow-x: auto;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -154,146 +213,59 @@
       overflow: hidden;
     }
 
-    th, td {
-      padding: 14px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
+    th {
+      background: #003366;
+      color: white;
     }
 
-    th {
-      background: #2c2c54;
-      color: white;
-      font-weight: 600;
+    td, th {
+      padding: 14px;
     }
 
     tr:hover {
-      background: #f9f9ff;
+      background: #f5f7fa;
     }
 
-    .check {
-      color: #10b981;
-      font-weight: bold;
-    }
-
-    .times {
-      color: #ef4444;
-    }
-
-    .zero-cost {
-      color: #10b981;
-      font-weight: bold;
-    }
-
-    /* Timeline horizontal */
-    .timeline {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      margin: 25px 0;
-    }
-
-    .timeline-step {
-      flex: 1;
-      text-align: center;
-      padding: 15px;
-      background: #f5f5fa;
-      margin: 5px;
-      border-radius: 10px;
-    }
-
-    .timeline-step .number {
-      background: #6c63ff;
-      color: white;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 10px;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-
-    /* Audience items */
-    .audience-item {
-      text-align: center;
-      padding: 20px;
-      background: linear-gradient(135deg, #6c63ff10 0%, #2c2c5410 100%);
-      border-radius: 12px;
-    }
-
-    .audience-icon {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    /* Demo alert */
-    .demo-alert {
-      background: #c7dffe;
-      border-left: 4px solid #0b69f5;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 8px;
-    }
-
-    /* Footer */
-    .footer {
-      background: #0f0f1a;
-      color: #aaa;
-      text-align: center;
-      padding: 40px 20px;
-      margin-top: 40px;
-    }
-
-    .footer p {
-      margin: 5px 0;
-    }
-
-    .footer strong {
-      color: #6382ff;
-    }
-
-    /* Boton */
+    /* Botón */
     .btn {
-      display: inline-block;
-      background: #636bff;
+      background: #0055A4;
       color: white;
       padding: 12px 28px;
       border-radius: 40px;
       text-decoration: none;
-      margin-top: 20px;
-      font-weight: 500;
-      transition: background 0.2s ease;
-      border: none;
-      cursor: pointer;
     }
 
     .btn:hover {
-      background: #5a52d6;
+      background: #003366;
+    }
+
+    /* Imagen */
+    .content-flex {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .image-content img {
+      max-width: 400px;
+      border-radius: 12px;
+    }
+
+    /* Logo */
+    .logo {
+      width: 80px;
+      margin-bottom: 15px;
     }
 
     /* Responsive */
     @media (max-width: 768px) {
+      .content-flex {
+        flex-direction: column;
+      }
+
       .header h1 {
         font-size: 2.5rem;
       }
-      .timeline {
-        flex-direction: column;
-      }
-      .timeline-step {
-        margin: 8px 0;
-      }
-    }
-
-    /* Listas */
-    ul {
-      margin-left: 25px;
-      margin-top: 10px;
-    }
-
-    li {
-      margin: 8px 0;
     }
   </style>
 </head>
@@ -305,17 +277,27 @@
   <div class="ubb-footer">Universidad del Bio-Bio · Concepcion, Chile · Edificio ADPT · UGCM</div>
 </div>
 
-<div class="container">
-  <!-- Que es PlagiDec -->
-  <div class="card">
-    <h2>Que es PlagiDec</h2>
-    <p><strong>PlagiDec</strong> (Plagio + Deteccion) es un modulo integrable a la plataforma <strong>Moodle</strong> que permite a los docentes de la Universidad del Bio-Bio detectar de manera automatizada:</p>
-    <ul>
-      <li>Casos de <strong>plagio textual</strong> (copia literal o parafrasis)</li>
-      <li><strong>Contenido generado por Inteligencia Artificial</strong> (ChatGPT, Gemini, Copilot, entre otros)</li>
-    </ul>
-    <p>Todo esto sin salir de Moodle, sin costos de suscripcion y manteniendo los datos dentro de la universidad.</p>
+<div class="card">
+  <div class="content-flex">
+
+    <!-- Texto -->
+    <div class="text-content">
+      <h2>Que es PlagiDec</h2>
+      <p><strong>PlagiDec</strong> (Plagio + Deteccion) es un modulo integrable a la plataforma <strong>Moodle</strong> que permite a los docentes de la Universidad del Bio-Bio detectar de manera automatizada:</p>
+      <ul>
+        <li>Casos de <strong>plagio textual</strong> (copia literal o parafrasis)</li>
+        <li><strong>Contenido generado por Inteligencia Artificial</strong> (ChatGPT, Gemini, Copilot, entre otros)</li>
+      </ul>
+      <p>Todo esto sin salir de Moodle, sin costos de suscripcion y manteniendo los datos dentro de la universidad.</p>
+    </div>
+
+    <!-- Imagen -->
+    <div class="image-content">
+      <img src="https://tse1.explicit.bing.net/th/id/OIP.edvNSkWojPKC6ITk56M2AQHaEo?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Plagio IA">
+    </div>
+
   </div>
+</div>
 
   <!-- Para quien esta definido -->
   <div class="card">
@@ -341,12 +323,10 @@
 
   <!-- Limitaciones -->
   <div class="card">
-    <h2>Limitaciones Conocidas</h2>
     <ul>
       <li>Solo soportara formatos de archivos usados por la intitución ( Doc, Docx, PDF, etc.)</li>
       <li>Modelo optimizado para español</li>
-      <li>Tiempo de procesamiento y respuesta depende del hardware institucional</li>
-      <li>Precision no iguala a Turnitin en bases de datos globales, pero es suficiente para contexto UBB</li>
+      <li>procesamiento y respuesta a travez de hardware institucional</li>
     </ul>
   </div>
 
@@ -379,9 +359,6 @@
         <strong>Evaluacion</strong>
         <p>Calificacion con respaldo objetivo</p>
       </div>
-    </div>
-    <div class="demo-alert">
-      <strong>Beneficio clave:</strong> Reduce el tiempo de revision de 5-20 minutos por trabajo a menos de 1 minuto.
     </div>
   </div>
 
@@ -483,20 +460,6 @@
       <div class="timeline-step"><div class="number">5</div><strong>Reporte</strong><p>Visualizacion en interfaz</p></div>
     </div>
   </div>
-
-  <!-- Objetivos -->
-  <div class="card">
-    <h2>Objetivos del Proyecto</h2>
-    <p><strong>Objetivo General:</strong> Desarrollar e implementar un modulo integrable a Moodle que permita detectar plagio y contenido generado por IA en trabajos entregados por estudiantes de la UBB.</p>
-    <h3>Objetivos Especificos</h3>
-    <ul>
-      <li>Analizar mecanismos de integracion de Moodle</li>
-      <li>Investigar y seleccionar algoritmos de PLN optimos</li>
-      <li>Disenar arquitectura e interfaz coherente con Moodle</li>
-      <li>Validar funcionamiento con pruebas controladas y grupo piloto</li>
-      <li>Definir requisitos funcionales y no funcionales con docentes UBB</li>
-    </ul>
-  </div>
 </div>
 <script>
   // Intersection Observer para animacion de tarjetas (sin errores de estilo)
@@ -518,6 +481,10 @@
       observer.observe(card);
     });
   }
+
+
 </script>
 </body>
 </html>
+
+
